@@ -2,17 +2,40 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log("Ready Captain");
 
     document.getElementById('add-task').addEventListener('click', function(event) {
-    event.preventDefault();
-    console.log(event);
-    var taskValue = document.getElementById('new-task').value;
+        event.preventDefault();
+        console.log(event);
+        var taskValue = document.getElementById('new-task').value;
 
-    console.log("TASK VALUE", taskValue)
+        console.log("TASK VALUE", taskValue)
 
-    if (taskValue) {
-        addTask(taskValue);
-    }
+        if (taskValue) {
+            addTask(taskValue);
+        }
 
     });
+
+    function createDeleteButton(li, actions) {
+        var deleteButton = document.createElement('button')
+        deleteButton.textContent = "Delete"
+        deleteButton.type = "button";
+        deleteButton.onclick = function (event) {
+            li.parentNode.removeChild(li);
+            actions.appendChild(deleteButton);
+        }
+
+        actions.replaceChildren(deleteButton);
+    };
+
+    function createEditButton(li, actions, taskValue) {
+        var editButton = document.createElement('button');
+        editButton.textContent = "Edit";
+        editButton.type = "button";
+        editButton.onclick = function(event) {
+            editTask(li, taskValue);
+            console.log("Edit Engaged");
+        }
+        actions.appendChild(editButton);
+    }
 
     var taskNumber = 0;
 
@@ -34,28 +57,13 @@ document.addEventListener('DOMContentLoaded', function () {
         var actions = document.createElement('div')
         actions.classList.add("task-actions");
 
-        var deleteButton = document.createElement('button')
-        deleteButton.textContent = "ABORT"
-        deleteButton.type = "button";
-        deleteButton.onclick = function(event) {
-            li.parentNode.removeChild(li);
-            actions.appendChild(deleteButton);
+        createDeleteButton(li, actions);
 
             console.log("Abortion")
-        }
 
-        actions.appendChild(deleteButton);
 
     // Add Edit Button  
-        var editButton = document.createElement('button');
-        editButton.textContent = "Edit"
-        editButton.type = "button"
-        editButton.onclick = function (event) {
-            editTask(li, taskValue);
-             console.log("Edit")
-        }
-
-        actions.appendChild(editButton);
+         createEditButton(li, actions, taskValue);
 
         li.appendChild(actions);
         
@@ -70,8 +78,23 @@ document.addEventListener('DOMContentLoaded', function () {
     function completeTask(li) {
         console.log(li) 
 
-        li.classList.toggle('completed')
+        // li.classList.toggle('completed')
 
+    }
+
+    function saveTask(li, newTaskValue) {
+        console.log("Saving");
+        var label = li.querySelector('.task-label');
+
+        label.textContent = newTaskValue
+
+        var actions = li.querySelector(".task-actions");
+
+        // Add Delete Button
+        createDeleteButton(li, actions);
+
+        // Add Edit Button
+        createEditButton(li, actions, newTaskValue);
     }
 
     function editTask(li, taskValue) {
@@ -87,19 +110,45 @@ document.addEventListener('DOMContentLoaded', function () {
         saveButton.textContent = "Save";
         saveButton.type = "button";
         saveButton.onclick = function(event){
-
+            var newTaskValue = editInput.value;
+            saveTask(li, newTaskValue);
         };
-        console.log("Edit Saved")
+        actions.replaceChildren(saveButton);
 
         // Add Cancel Button
         var cancelButton = document.createElement('button');
         cancelButton.textContent = "Cancel";
         cancelButton.type = "button";
         cancelButton.onclick = function(event) {
+           cancelTask(li, taskValue)
 
         }
-        console.log("Edit Cancelled")
-        actions.replaceChildren(cancelButton);
-        actions.appendChild(saveButton);
+        
+        actions.appendChild(cancelButton);
     }
+    
+
+    function cancelTask(li, taskValue) {
+
+        var label = li.querySelector(".task-label");
+        label.textContent = taskValue;
+
+        var actions = li.querySelector(".task-actions");
+
+        // Add Delete Button
+        createDeleteButton(li, actions);
+
+        // Add Edit Button
+        var editButton = document.createElement('button');
+        editButton.textContent = "Edit";
+        editButton.type = "button";
+        editButton.onclick = function (event) {
+            editTask(li, taskValue);
+        }
+
+        actions.appendChild(editButton);
+    }
+
+    
 });
+
