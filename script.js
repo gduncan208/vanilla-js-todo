@@ -54,12 +54,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
      // Add Delete Button
-        var actions = document.createElement('div')
+        var actions = document.createElement('div');
         actions.classList.add("task-actions");
 
         createDeleteButton(li, actions);
 
-            console.log("Abortion")
+            console.log("Abortion");
 
 
     // Add Edit Button  
@@ -78,7 +78,36 @@ document.addEventListener('DOMContentLoaded', function () {
     function completeTask(li) {
         console.log(li) 
 
-        // li.classList.toggle('completed')
+        li.classList.toggle('completed')
+
+        if (li.classList.contains('completed')) {
+            console.log("completed task toggled on")
+
+        if (!li.querySelector('.checkmark')) {
+            var animation = document.createElement('div');
+            animation.classList.add("checkmark");
+            animation.innerHTML = "&#10003;";
+            li.appendChild(animation);
+
+            var actions = li.querySelector('.task-actions');
+
+            if (actions) {
+                actions.style.display = 'none';
+            }
+        }
+        } else {
+            console.log("completed task toggled off");
+
+            var animation = li.querySelector('.checkmark');
+                if (animation) {
+                    li.removeChild(animation);
+                }
+
+            var actions = li.querySelector('.task-actions');
+                if (actions) {
+                    actions.style.display = 'block';
+                }
+        }
 
     }
 
@@ -139,14 +168,8 @@ document.addEventListener('DOMContentLoaded', function () {
         createDeleteButton(li, actions);
 
         // Add Edit Button
-        var editButton = document.createElement('button');
-        editButton.textContent = "Edit";
-        editButton.type = "button";
-        editButton.onclick = function (event) {
-            editTask(li, taskValue);
-        }
+        createEditButton(li, actions, taskValue);
 
-        actions.appendChild(editButton);
     }
 
     

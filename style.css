@@ -67,8 +67,24 @@ button:hover {
     background-color: slategray;
 }
 
-#task-list li.completed {
-    background-color: palegreen;
-    transition: ease-in;
-    animation-duration: 1s;
+.checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: green;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    animation: fadeIn 1s forwards; /* Add your animation here */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
