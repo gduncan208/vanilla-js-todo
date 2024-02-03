@@ -56,6 +56,9 @@ button:hover {
 .task-label {
     display: flex;
     flex-grow: 1 ;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .task-actions button {
@@ -70,14 +73,13 @@ button:hover {
 .checkmark {
     width: 20px;
     height: 20px;
-    background-color: green;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-weight: bold;
-    animation: fadeIn 1s forwards; /* Add your animation here */
+    animation: fadeIn 1s forwards; 
 }
 
 @keyframes fadeIn {
